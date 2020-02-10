@@ -25,6 +25,21 @@
 //     type: '🏄'
 // }
 
+// {
+//     amounts: [0]
+// }
+
+// {
+//     amounts: [1]
+// }
+
+// {
+//     type: INCREMENT,
+//     id: 0    
+// }
+
+
+
 import { 
     createStore
 } from 'redux';
@@ -32,16 +47,16 @@ import {
 // reducers are always named for the state they manage.
 // They always receive the current state and the action
 // they're processing.
-const defaultState = { amount: 100 };
+const defaultState = { amounts: [0, 0, 0, 0, 0] };
 
 function counter(state=defaultState, action) {
     console.log('Somebody called counter()');
     const newState = { ...state };
 
     if (action.type === 'INCREMENT') {
-        newState.amount = state.amount + 1;
+        newState.amounts[action.id] = state.amounts[action.id] + 1;
     } else if (action.type === 'DECREMENT') {
-        newState.amount = state.amount - 1;
+        newState.amounts[action.id] = state.amounts[action.id] - 1;
     } else {
       // ... no need to do anything.
       // we already made a copy of state to return.
@@ -53,7 +68,7 @@ function counter(state=defaultState, action) {
 // You give it a reducer, it gives you a "store".
 // The store is an object that manages your state 
 // using your reducer.
-const store = createStore(counter);
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // "Push notifications" - subscribe to changes in the store
 store.subscribe(() => {
     console.log(`The state is now:`);
@@ -61,20 +76,30 @@ store.subscribe(() => {
     console.table(store.getState());
 });
 
-// Let's give the store some actions to process.
-store.dispatch({
-    type: 'INCREMENT'
-});
-store.dispatch({
-    type: '🤽‍♂️'
-});
-store.dispatch({
-    type: 'INCREMENT'
-});
 
-store.dispatch({
-    type: 'DECREMENT'
-});
+function actionIncrement(id) {
+    return {
+        type: 'INCREMENT',
+        id
+    }
+}
+
+function actionDecrement(id) {
+    return {
+        type: 'DECREMENT',
+        id
+    }
+}
+
+// Let's give the store some actions to process.
+store.dispatch(actionIncrement(0));
+store.dispatch(actionIncrement(0));
+store.dispatch(actionIncrement(0));
+store.dispatch(actionIncrement(2));
+store.dispatch(actionIncrement(2));
+store.dispatch(actionDecrement(0));
+store.dispatch(actionDecrement(1));
+store.dispatch(actionDecrement(4));
 
 
 // import React from 'react';

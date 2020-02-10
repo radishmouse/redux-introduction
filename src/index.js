@@ -38,6 +38,20 @@
 //     id: 0    
 // }
 
+// { 
+//     amounts: [54, 22, 10, 87] 
+// }
+
+// { 
+//     amounts: [54, 10, 87] 
+// }
+
+
+// {
+//     type: 'DEL_COUNTER'
+//     id: 1
+// }
+
 
 
 import { 
@@ -47,21 +61,39 @@ import {
 // reducers are always named for the state they manage.
 // They always receive the current state and the action
 // they're processing.
-const defaultState = { amounts: [0, 0, 0, 0, 0] };
+const defaultState = { amounts: [43, 19, 84, 10, 3] };
+
+// CREATE
+const ADD_COUNTER = 'ADD_COUNTER';
+
+// UPDATE
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+// DELETE
+const DEL_COUNTER = 'DEL_COUNTER';
+
 
 function counter(state=defaultState, action) {
     console.log('Somebody called counter()');
     const newState = { ...state };
-
-    if (action.type === 'INCREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] + 1;
-    } else if (action.type === 'DECREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] - 1;
-    } else {
-      // ... no need to do anything.
-      // we already made a copy of state to return.
+    
+    switch(action.type) {
+        case INCREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] + 1;
+            break;
+        case DECREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] - 1;
+            break;
+        case ADD_COUNTER:
+            newState.amounts.push(0);
+            break;
+        case DEL_COUNTER:
+            newState.amounts.splice(action.id, 1);
+            break;
+        default:
+            break;
     }
-    // They *must* return the new version of state.
     return newState;
 }
 
@@ -79,27 +111,54 @@ store.subscribe(() => {
 
 function actionIncrement(id) {
     return {
-        type: 'INCREMENT',
+        type: INCREMENT,
         id
     }
 }
 
 function actionDecrement(id) {
     return {
-        type: 'DECREMENT',
+        type: DECREMENT,
         id
     }
 }
 
+function actionAddCounter() {
+    return {
+        type: ADD_COUNTER
+    }
+}
+
+function actionDelCounter(id) {
+    return {
+        type: DEL_COUNTER,
+        id
+    }
+}
+
+store.dispatch(actionAddCounter())
+store.dispatch(actionDelCounter(3));
+store.dispatch(actionDelCounter(0));
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+
+
 // Let's give the store some actions to process.
-store.dispatch(actionIncrement(0));
-store.dispatch(actionIncrement(0));
-store.dispatch(actionIncrement(0));
-store.dispatch(actionIncrement(2));
-store.dispatch(actionIncrement(2));
-store.dispatch(actionDecrement(0));
-store.dispatch(actionDecrement(1));
-store.dispatch(actionDecrement(4));
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(2));
+// store.dispatch(actionIncrement(2));
+// store.dispatch(actionDecrement(0));
+// store.dispatch(actionDecrement(1));
+// store.dispatch(actionDecrement(4));
 
 
 // import React from 'react';

@@ -44,6 +44,8 @@
 //     type: INCREMENT_COFFEE_COUNT
 // }
 
+import { createStore } from 'redux';
+
 const defaultLunchState = {
     lunch: "burrito"
 }
@@ -61,7 +63,7 @@ const UPDATE_LUNCH_ITEM = 'UPDATE_LUNCH_ITEM'
 // example action provided by redux
 // when it creates the store
 // {
-//     type: '@@REDUX/INITaasdf78ashfaskufdy'
+//     type: '@@INIT'
 // }
 
 function lunch(state=defaultLunchState, action) {
@@ -76,5 +78,15 @@ function lunch(state=defaultLunchState, action) {
     }
     return newState;
 }
+
+const someOtherInitialState = {
+    lunch: 'coffee'
+};
+
+const store = createStore(  lunch, 
+                            someOtherInitialState,
+                            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+                        );
+window.store = store;
 
 
